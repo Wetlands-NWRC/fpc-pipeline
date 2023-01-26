@@ -66,12 +66,12 @@ n.cores   <- ifelse(test = is.macOS, yes = 2, no = parallel::detectCores() - 1);
 cat(paste0("\n# n.cores = ",n.cores,"\n"));
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-dir.geoson   <- file.path(data.directory,"TrainingData_Geojson");
+dir.geojson   <- file.path(data.directory,"training_data");
 dir.tiffs    <- file.path(data.directory,"img");
 dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
-target.variable      <- 'VV';
+target.variable      <- target.variable;
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 
@@ -79,16 +79,22 @@ RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 DF.training <- getData.geojson(
     input.directory = dir.geoson,
     parquet.output  = "DF-training-raw.parquet"
-    );
+);
+
+DF.training <- sanitize.col.names(
+  DF.input = DF.training
+);
+
+DF.colour.scheme <- getData.colour.scheme.json(
+  DF.training = DF.training,
+  colours.json = file.path(data.directory, 'colours.json')
+);
 
 DF.training <- preprocess.training.data(
     DF.input         = DF.training,
     DF.colour.scheme = DF.colour.scheme
     );
 
-DF.colour.scheme <- getData.colour.scheme(
-    DF.training = DF.training
-    );
 
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );
@@ -119,8 +125,8 @@ trained.fpc.FeatureEngine <- train.fpc.FeatureEngine(
     land.cover       = 'land_cover',
     date             = 'date',
     variable         = target.variable,
-    min.date         = as.Date("2019-01-15"),
-    max.date         = as.Date("2019-12-16"),
+    min.date         = NULL,
+    max.date         = NULL,
     n.harmonics      = n.harmonics,
     DF.colour.scheme = DF.colour.scheme,
     RData.output     = RData.trained.engine
