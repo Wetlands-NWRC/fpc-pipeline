@@ -1,21 +1,10 @@
 #!/bin/bash
 
-# data_snapshot=NULL
-#
-# for argument in "$@"
-# do
-#     key=$(  echo $argument | cut -f1 -d=)
-#     value=$(echo $argument | cut -f2 -d=)
-#
-#     if [[ $key == *"--"* ]]; then
-#         v="${key/--/}"
-#         declare $v="${value}"
-#    fi
-# done
-#
-# args=()
-# args+=( '--data_snapshot' ${data_snapshot} )
-
+if [ $# -eq 0 ] 
+then
+  echo "Setting Default Value"
+  targetVar=$1
+fi
 ##################################################
 currentDIR=`pwd`
    codeDIR=${currentDIR}/code
@@ -35,7 +24,7 @@ cp    $0         ${outputDIR}/code
 myRscript=${codeDIR}/main.R
 stdoutFile=${outputDIR}/stdout.R.`basename ${myRscript} .R`
 stderrFile=${outputDIR}/stderr.R.`basename ${myRscript} .R`
-R --no-save --args ${dataDIR} ${codeDIR} ${outputDIR} < ${myRscript} > ${stdoutFile} 2> ${stderrFile}
+R --no-save --args ${dataDIR} ${codeDIR} ${outputDIR} ${targetVar} < ${myRscript} > ${stdoutFile} 2> ${stderrFile}
 
 ##################################################
 exit
