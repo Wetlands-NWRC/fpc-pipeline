@@ -3,6 +3,7 @@ command.arguments <- commandArgs(trailingOnly = TRUE);
 data.directory    <- normalizePath(command.arguments[1]);
 code.directory    <- normalizePath(command.arguments[2]);
 output.directory  <- normalizePath(command.arguments[3]);
+target.variable   <- normalizePath(command.arguments[4]);
 
 print( data.directory );
 print( code.directory );

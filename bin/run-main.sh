@@ -8,7 +8,7 @@ fi
 ##################################################
 currentDIR=`pwd`
    codeDIR=${currentDIR}/code
- outputDIR=${currentDIR}/output
+ outputDIR=${currentDIR}/output/${targetVar}
 
 parentDIR=`dirname ${currentDIR}`
 dataDIR=${parentDIR}/data
