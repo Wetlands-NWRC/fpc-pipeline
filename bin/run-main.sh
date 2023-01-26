@@ -3,12 +3,18 @@
 if [ $# -eq 0 ] 
 then
   echo "Setting Default Value"
+  targetVar="VV"
+else
   targetVar=$1
 fi
+
+##################################################
+DIR_PATH=`dirname ${BASH_SOURCE:-$0}`
+codeDIR=${DIR_PATH}/../code
+
 ##################################################
 currentDIR=`pwd`
-   codeDIR=${currentDIR}/code
- outputDIR=${currentDIR}/output/${targetVar}
+outputDIR=${currentDIR}/output/${targetVar}
 
 parentDIR=`dirname ${currentDIR}`
 dataDIR=${parentDIR}/data
