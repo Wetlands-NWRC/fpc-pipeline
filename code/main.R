@@ -2,6 +2,7 @@ command.arguments <- commandArgs(trailingOnly = TRUE);
 data.directory    <- normalizePath(command.arguments[1]);
 code.directory    <- normalizePath(command.arguments[2]);
 output.directory  <- normalizePath(command.arguments[3]);
+target.variable   <- normalizePath(command.arguments[4]);
 
 print( data.directory );
 print( code.directory );
@@ -32,20 +33,24 @@ require(fpcFeatures);
 
 # source supporting R code
 code.files <- c(
-    'compute-fpc-scores.R',
-    'getData-colour-scheme.R',
-    'getData-geojson.R',
-    'initializePlot.R',
-    'parquet2tiff.R',
-    'persist-fpc-scores.R',
-    'plot-RGB-fpc-scores.R',
-    'preprocess-training-data.R',
-    'tiff2parquet.R',
-    'train-fpc-FeatureEngine.R',
-    'utils-rgb.R',
-    'visualize-fpc-approximations.R',
-    'visualize-training-data.R',
-    );
+  'compute-fpc-scores.R',
+  'conversions.R',
+  'getData-colour-scheme.R',
+  'getData-geojson.R',
+  'initializePlot.R',
+  'parquet2tiff.R',
+  'plot-RGB-fpc-scores.R',
+  'preprocess-training-data.R',
+  'query.R',
+  'sanitize.R',
+  'scale-data.R',
+  'setup.R',
+  'tiff2parquet.R',
+  'train-fpc-FeatureEngine.R',
+  'utils-rgb.R',
+  'visualize-fpc-approximations.R',
+  'visualize-training-data.R'
+);
 
 for ( code.file in code.files ) {
     source(file.path(code.directory,code.file));
