@@ -9,7 +9,8 @@ visualize.training.data <- function(
         ),
     plot.timeseries  = TRUE,
     plot.heatmaps    = TRUE,
-    output.directory = NULL
+    output.directory = NULL,
+    date.julian      = TRUE
     ) {
 
     thisFunctionName <- "visualize.training.data";
@@ -38,6 +39,10 @@ visualize.training.data <- function(
         MARGIN = 1,
         FUN    = function(x) { return(paste(x,collapse = "_")) }
         );
+    
+    # if(date.julian){
+    #     DF.training[, 'date'] <- format(x = DF.training[,'date'], format = "%j")
+    # }
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     if ( plot.timeseries ) {
@@ -140,7 +145,8 @@ visualize.training.data_timeSeriesRibbonPlots <- function(
 
         my.ggplot <- my.ggplot + scale_x_date(
             breaks       = sort(unique(DF.temp[,"date"])),
-            minor_breaks = NULL
+            minor_breaks = NULL,
+            date_labels = '%j'
             );
 
         my.ggplot <- my.ggplot + theme(

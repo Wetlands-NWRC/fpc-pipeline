@@ -1,8 +1,11 @@
 
 tiff2parquet <- function(
-    dir.tiffs    = NULL,
-    n.cores      = 1,
-    dir.parquets = "parquets"
+    dir.tiffs       = NULL,
+    n.cores         = 1,
+    dir.parquets    = "parquets",
+    column.names    = NULL,
+    target.variable = NULL,
+    FUNC            = NULL
     ) {
 
     thisFunctionName <- "tiff2parquet";
@@ -22,6 +25,8 @@ tiff2parquet <- function(
         cat("\n### ~~~~~~~~~~~~~~~~~~~~ ###\n");
         return( NULL );
         }
+
+    if(is.null(column.names)) {column.names <- c("VV", "VH", "date", "y", "x")}
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     DF.dates <- tiff2parquet_get.dates(dir.tiffs = dir.tiffs);
@@ -60,7 +65,10 @@ tiff2parquet <- function(
         dir.tiffs         = dir.tiffs,
         DF.tiff.filenames = DF.tiff.filenames,
         n.cores           = n.cores,
-        dir.parquets      = dir.parquets
+        dir.parquets      = dir.parquets,
+        col.names         = column.names,
+        target.variable   = target.variable,
+        FUN               = FUNC
         );
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
@@ -75,7 +83,10 @@ tiff2parquet_persist <- function(
     dir.tiffs         = NULL,
     DF.tiff.filenames = NULL,
     dir.parquets      = "parquets",
-    n.cores           = 1
+    n.cores           = 1,
+    col.names         = NULL,
+    target.variable   = NULL,
+    FUN               = NULL
     ) {
 
     require(doParallel);
@@ -151,25 +162,33 @@ tiff2parquet_persist <- function(
             temp.path    <- file.path(dir.tiffs,temp.dir,temp.tiff);
             cat("\ntemp.path\n");
             print( temp.path   );
-            temp.stack  <- raster::stack(x = temp.path);
-            # temp.values <- raster::getValues(x = temp.stack);
-            temp.values <- cbind(raster::coordinates(obj = temp.stack),raster::getValues(x = temp.stack));
+            temp.stack       <- raster::stack(x = temp.path);
+            temp.rasterlayer <- raster::raster(temp.stack);
+            temp.coords      <- raster::coordinates(temp.rasterlayer);
+            temp.values      <- raster::getValues(x = temp.stack);
             colnames(temp.values) <- tiff2parquet_clean.colnames(
-                x         = colnames(temp.values),
-                directory = temp.dir
-                );
+              x         = colnames(temp.values),
+              directory = temp.dir
+              );
             temp.colnames <- colnames(temp.values);
-            temp.values <- as.data.frame(temp.values);
+            temp.values <- as.data.frame(cbind(temp.coords, temp.values));
             temp.values[,'date'] <- rep(x = temp.date, times = nrow(temp.values));
-            temp.values <- temp.values[,c('date',temp.colnames)];
+            temp.values <- temp.values[,c('date',temp.colnames, 'y', 'x')];
             cat("\nstr(temp.values)\n");
             print( str(temp.values)   );
-            # cat("\ntemp.values[1:10,]\n");
-            # print( temp.values[1:10,]   );
             DF.data <- rbind(DF.data,temp.values);
+            #DF.data <- DF.data[, col.names]
             base::remove(list = c("temp.values"))
             base::gc();
             }
+
+        if(!is.null(FUN)){
+            DF.data[target.variable] <- apply(
+                X = DF.data[target.variable],
+                MARGIN = 1,
+                FUN = FUN
+            )
+        }
 
         arrow::write_parquet(
             sink = file.path(dir.parquets,temp.parquet),

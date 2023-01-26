@@ -1,11 +1,11 @@
 
 train.fpc.FeatureEngine <- function(
     DF.training         = NULL,
-    x                   = 'lon',
-    y                   = 'lat',
-    land.cover          = 'land_cover',
-    date                = 'date',
     variable            = 'VV',
+    x                   = NULL,
+    y                   = NULL,
+    land.cover          = NULL,
+    date                = NULL,
     min.date            = NULL,
     max.date            = NULL,
     n.partition         = 100,
@@ -17,6 +17,24 @@ train.fpc.FeatureEngine <- function(
     DF.colour.scheme    = NULL
     ) {
 
+    ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+    # Set Defult args
+    if(is.null(x)){ x <- "lon" }
+    if(is.null(y)){ y <- "lat" }
+    if(is.null(land.cover)){ land.cover <- "land_cover" }
+    if(is.null(date)){ date <- "date" }
+    if(is.null(min.date)){ 
+        min.date <- format(min(DF.training$date, na.rm = TRUE), format = '%Y')
+        min.date <- as.Date(paste0(min.date, "-03-01"))
+
+    }
+    if(is.null(max.date)){ 
+        max.date <- format(max(DF.training$date, na.rm = TRUE), format = '%Y')
+        max.date <- as.Date(paste0(max.date, "-11-01"))
+    }
+
+    ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+
     thisFunctionName <- "train.fpc.FeatureEngine";
     cat("\n### ~~~~~~~~~~~~~~~~~~~~ ###");
     cat(paste0("\n",thisFunctionName,"() starts.\n\n"));
@@ -25,6 +43,7 @@ train.fpc.FeatureEngine <- function(
     require(fpcFeatures);
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+    # TODO only want this to run when the y_x is not in the input table
     y_x <- paste(x = c(y, x), collapse = "_");
     DF.training <- DF.training[,c(y,x,land.cover,date,variable)];
     DF.training[,y_x] <- apply(

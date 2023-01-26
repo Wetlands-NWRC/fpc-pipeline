@@ -1,7 +1,8 @@
 
 preprocess.training.data <- function(
     DF.input         = NULL,
-    DF.colour.scheme = NULL
+    DF.colour.scheme = NULL,
+    target.variable  = NULL
     ) {
 
     thisFunctionName <- "preprocess-training-data";
@@ -17,11 +18,17 @@ preprocess.training.data <- function(
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^class$",   replacement = "land_cover");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^cdesc$",   replacement = "land_cover");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^point_x$", replacement =  "longitude");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^POINT_X$", replacement =  "longitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^point_y$", replacement =   "latitude");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^POINT_Y$", replacement =   "latitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^lon$",     replacement =  "longitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^lat$",     replacement =   "latitude");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^x$",       replacement =  "longitude")
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^y$",       replacement =   "latitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^vv$",      replacement =         "VV");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^vh$",      replacement =         "VH");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^ch$",      replacement =         "CH");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^cv$",      replacement =         "CV");
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     DF.output[,'date'] <- as.Date(DF.output[,'date']);
@@ -41,16 +48,28 @@ preprocess.training.data <- function(
         FUN    = function(x) {return(paste(x,collapse="_"))}
         );
 
+    DF.output['year'] <- sapply(
+        X = DF.output[,c('date')],
+        FUN = function(x) {return (format(x, "%Y"))}
+    )
+
+    DF.output[,"X_Y_year" ] <- paste(DF.output[,"longitude"],
+    DF.output[,"latitude"] ,DF.output[,"year"],sep = "_");
+
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     colnames.to.retain <- c(
         'latitude',
         'longitude',
         'lat_lon',
         'land_cover',
-        'date',
-        'VV',
-        'VH'
+        'date'
         );
+
+    colnames.to.retain <- append(
+        x = colnames.to.retain,
+        values = c(target.variable),
+        after = 5
+    )
 
     DF.output <- DF.output[,colnames.to.retain];
 

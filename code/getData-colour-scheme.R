@@ -3,9 +3,7 @@ getData.colour.scheme <- function(
     DF.training = NULL
     ) {
 
-    colnames(DF.training) <- tolower(colnames(DF.training));
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^class$", replacement = "land_cover");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^cdesc$", replacement = "land_cover");
+    ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 
     boq.land.covers     <- c("marsh","swamp","water","forest","ag","shallow_water");
     train.land.covers   <- sort(unique(DF.training[,'land_cover']));
@@ -28,6 +26,43 @@ getData.colour.scheme <- function(
 
     }
 
+
+getData.colour.scheme.json <- function(
+    DF.training = NULL,
+    colours.json = NULL
+) {
+
+    land.covers <- sort(unique(DF.training[, "land_cover"]))
+
+    if (!file.exists(colours.json)){
+        DF.colour.scheme <- data.frame(
+            land_cover = land.covers,
+            colour = getData.colour.scheme_random.palette(length(land.covers))
+        )
+        rownames(DF.colour.scheme) <- DF.colour.scheme[, "land_cover"]
+        json.obj <- jsonlite::write_json(
+            x = DF.colour.scheme,
+            path = colours.json,
+            pretty = TRUE,
+        )
+        return(DF.colour.scheme)
+    }
+    else{
+        DF.colour.scheme <- data.frame()
+        json.obj <- jsonlite::fromJSON(txt = colours.json)
+        DF.colour.scheme <- rbind(DF.colour.scheme, json.obj)
+
+        DF.colour.scheme <- update.colours.json(
+            DF.colour.scheme = DF.colour.scheme,
+            land.cover = land.covers,
+            colours.json = colours.json
+        )
+
+        return(DF.colour.scheme)
+    }
+}
+
+
 ##################################################
 getData.colour.scheme_random.palette <- function(
     n.colours = 10
@@ -45,3 +80,31 @@ getData.colour.scheme_random.palette <- function(
         );
     return( DF.temp[,'colour'] );
     }
+
+
+update.colours.json <- function(
+    DF.colour.scheme = NULL,
+    land.cover       = NULL,
+    colours.json     = NULL
+) {
+    diff <- setdiff(land.cover, DF.colour.scheme[,"land_cover"])
+    needsUpdate <- length(diff) > 0
+
+    if(needsUpdate) {
+        DF.update <- data.frame(
+            land_cover = diff,
+            colour = getData.colour.scheme_random.palette(length(diff))
+        )
+        rownames(DF.update) <- diff
+        DF.colour.scheme <- rbind(DF.colour.scheme, DF.update)
+        jsonlite::write_json(
+            x = DF.colour.scheme,
+            path = colours.json,
+            pretty = TRUE
+        )
+        return(DF.colour.scheme)
+    }
+    else {
+       return(DF.colour.scheme)
+    }
+}
