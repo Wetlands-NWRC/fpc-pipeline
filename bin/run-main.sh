@@ -19,11 +19,10 @@
 ##################################################
 currentDIR=`pwd`
    codeDIR=${currentDIR}/code
- outputDIR=${currentDIR//github/gittmp}/output
+ outputDIR=${currentDIR}/output
 
 parentDIR=`dirname ${currentDIR}`
-# dataDIR=${parentDIR}/000-data
-  dataDIR=/datatransfer
+dataDIR=${parentDIR}/data
 
 if [ ! -d ${outputDIR} ]; then
 	mkdir -p ${outputDIR}
