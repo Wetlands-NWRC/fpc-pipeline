@@ -77,7 +77,7 @@ RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 DF.training <- getData.geojson(
-    input.directory = dir.geoson,
+    input.directory = dir.geojson,
     parquet.output  = "DF-training-raw.parquet"
 );
 
