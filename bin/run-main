@@ -16,8 +16,7 @@ codeDIR=${DIR_PATH}/../code
 currentDIR=`pwd`
 outputDIR=${currentDIR}/output/${targetVar}
 
-parentDIR=`dirname ${currentDIR}`
-dataDIR=${parentDIR}/data
+dataDIR=${currentDIR}/data
 
 if [ ! -d ${outputDIR} ]; then
 	mkdir -p ${outputDIR}
