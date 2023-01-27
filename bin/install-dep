@@ -22,4 +22,4 @@ conda install --yes \
 
 conda install -c conda-forge --strict-channel-priority r-arrow
 
-R CMD INSTALL --clean --no-html --no-docs --use-vanilla ../pkg/fpcFeatures_0.0.0.0001.tar.gz
+exit
