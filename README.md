@@ -44,6 +44,7 @@ $ (fpc-r-env) ./scripts/install-pkg-dep
 # or to boot up the help documentation
 >> browsVignettes("fpcFeatures")
 ```
+- if no error is raised then the package was successfully installed 
 
 ## Setting up the pipeline
 - run helper script to install pipeline dependencies
