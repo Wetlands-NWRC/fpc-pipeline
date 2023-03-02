@@ -32,4 +32,10 @@ stderrFile=${outputDIR}/stderr.R.`basename ${myRscript} .R`
 R --no-save --args ${dataDIR} ${codeDIR} ${outputDIR} ${targetVar} < ${myRscript} > ${stdoutFile} 2> ${stderrFile}
 
 ##################################################
+# TODO install GDAL python bindings, invoke python build_tiff.py file
+tmpTiffDir='tmp-tif'
+tifName=${targetVar}-fpc-scores.tif
+python ${codeDIR}/build_tif.py ${outputDIR}/${tmpTiffDir} ${tifName} 
+
+# TODO need to add lines to clean up working dir
 exit
