@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+conda install --yes \
+    -c conda-forge \
+    "r-cowplot" \
+    "r-dplyr" \
+    "r-fda" \
+    "r-ggplot2" \
+    "r-logger" \
+    "r-lubridate" \
+    "r-R6"
