@@ -6,72 +6,95 @@ What you will need
 - A computer that has Ubuntu >= 18, or MacOSX 
 - A minimum of 32 GB of RAM, anything greater than 64 GB of ram is prefered
 - the More CPU cores the better this was developed and ran on a machine with 16 cores / 8 CPUs  
+<br>
 
-# Pipeline Setup
-Step 1): Clone the Repo 
+# Initial Setup
+## Setup fpcFeatures R Package
+ 
 ```sh
+# Step 1): Clone the Repo
 $ git clone https://github.com/Wetlands-NWRC/fpc-pipeline.git
 ```
 
-Step 2): Create a base conda environment
-```sh
-$ conda create --name some-env-name
-```
-the above env will be the base environemtn to which we will install all the pipeline dependencies
-
-Step 3) cd into the pipeline directory
-```sh
-$ cd /to/where/you/cloned/the/pipeline/fpc-pipeline
+```shell
+# Step 2): change the dir to where you cloned the repo
+$ cd ./fpc-pipeline
 ```
 
-Step 4): activate the base environment
 ```sh
-$ conda activate some-env-name
+# step 3: create the base conda environment and activate the environment
+$ conda create --name fpc-r-env
+$ conda activate fpc-r-env
 ```
-
-Step 5): Run install-dep, assuming you are in the root of the pipeline
 ```sh
-$ (some-env-name) bin/install-dep
+# Step 4: run the package install helper scripts from the activate env
+$ (fpc-r-env) ./scripts/install-pkg-dep
 ```
-the above command will install r conda dependencies into the activated base env
-
-Step 6) Install the fpcFeatureEngine R Package, boot up an R terminal from the activte conda env and enter:
+```shell
+# step 5: from the command line boot up an R Terminal
+(fpc-r-env)$ R
+# or Radian
+(fpc-r-env)$ radian
+```
 ```R
-install.packages(repos = NULL, type = "source", pkgs = "pkg/fpcFeatures_0.0.0.0001.tar.gz" )
+# step 6: install the fpcFeatures package tarball
+>> install.packages(repos = NULL, type = "source", pkgs = "pkg/fpcFeatures_0.0.0.0001.tar.gz" )
+# step 7: check to see if it was installed correctly
+>> library(fpcFeatures)
+# or to boot up the help documentation
+>> browsVignettes("fpcFeatures")
 ```
-the above assumes that you are running the r terminal from the root (fpc-pipelines)
+- if no error is raised then the package was successfully installed 
 
-# To Run the pipeline
-See example below. <br>
-If you are in the fpc-testing dir, and your directory looks like the skeleton in the example. you would go
+## Setting up the pipeline
+- run helper script to install pipeline dependencies
+```commandline 
+(fpc-r-env) $  ./scripts/install-pipe-dep
+```
+# Running the pipeline
+To run the pipeline you need 3 pieces. 
+
+1. code directory
+2. your data
+3. run-main or run-diagnostics
+
+1 and 3 are modular you can move them were ever as long as they stay together. You cant run one without the other.
+
+## Project setup
+```
+# Example Project setup
+├── project-root
+│   ├── code
+│   │   ├── R modules
+|   ├── data
+│   │   ├── img
+│   │   └── training_data
+│   ├── run-main
+```
+- Assuming you project follow this structure. You need to open up the run script file and edit the dataDir variable, the path need to be relative to where the run scripts are located. 
 ```sh
-$ ../fpc-pipeline/bin/run-diagnostics
+# update this to point to the root of where your data is stored
+dataDIR=${currentDIR}/data
+
+# for example if the data dir was one level up from were the run scripts are it would look like this
+dataDIR=${currentDIR}/../data
+```
+## Running scripts
+- After you have made the appropriate changes to the run script you intend on running. just run the shell scripts from the command line
+```commandline
+(fpc-r-env) $ run-diagnostics
 ```
 
 ## Tips for running
-- do not remove the shell scipts from the bin folder. the script works of its relative position in the project. if you move it some where else other than fpc-pipeline/bin it will not work as expected
 - if you get a permissions denied when executing the shell scripts run the below command, will make the script a executable
-```sh 
+```sh
 chmod +x script
 ```
 
 
-# Seting up a FPC Project
-Sample Directory Structure
+# Sample Directory Structure
 ```
-├── fpc-pipeline
-│   ├── bin
-│   │   ├── install-dep
-│   │   ├── run-diagnostics
-│   │   └── run-main
-│   ├── code
-│   │   ├── Code for Pipeline
-│   ├── environment.yaml
-│   ├── LICENSE
-│   ├── pkg
-│   │   └── fpcFeatures_0.0.0.0001.tar.gz
-│   └── README.md
-└── fpc-testing
+── project-root
     ├── data
     │   ├── colours.json
     │   |── training_data
@@ -148,6 +171,14 @@ Note that these are just the dependencies and not how to install them
 ``` sh
 $ conda install -c arrow-nightlies -c conda-forge --strict-channel-priority r-arrow
 ```
+
+NOTE:
+
+If you would like to you are able to directly install this into your global R environment. All you need to do is to remove the 'r-' prefix from the package name and use R's buildin package installer method (``` install.packages ```).
+
+However you should note that some of these packages have C++ bindings that need to be installed along with the package, as well as other dependencies that do not get automatically installed. 
+
+<br><br>
 
 # TODO 
 Add citiations / give credit to Ken

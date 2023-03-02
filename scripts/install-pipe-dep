@@ -2,13 +2,6 @@
 
 conda install --yes \
     -c conda-forge \
-    "r-cowplot" \
-    "r-dplyr" \
-    "r-fda" \
-    "r-ggplot2" \
-    "r-logger" \
-    "r-lubridate" \
-    "r-R6" \
     "r-doParallel" \
     "r-foreach" \
     "r-gdalUtils" \
@@ -21,5 +14,4 @@ conda install --yes \
     "r-tidyr"
 
 conda install -c conda-forge --strict-channel-priority r-arrow
-
-exit
+conda install -c r r-jsonlite
