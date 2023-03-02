@@ -41,6 +41,21 @@ install.packages(repos = NULL, type = "source", pkgs = "pkg/fpcFeatures_0.0.0.00
 ```
 the above assumes that you are running the r terminal from the root (fpc-pipelines)
 
+# To Run the pipeline
+See example below. <br>
+If you are in the fpc-testing dir, and your directory looks like the skeleton in the example. you would go
+```sh
+$ ../fpc-pipeline/bin/run-diagnostics
+```
+
+## Tips for running
+- do not remove the shell scipts from the bin folder. the script works of its relative position in the project. if you move it some where else other than fpc-pipeline/bin it will not work as expected
+- if you get a permissions denied when executing the shell scripts run the below command, will make the script a executable
+```sh 
+chmod +x script
+```
+
+
 # Seting up a FPC Project
 Sample Directory Structure
 ```
@@ -59,15 +74,50 @@ Sample Directory Structure
 └── fpc-testing
     ├── data
     │   ├── colours.json
-    │   └── training_data
-    │       ├── training_data_1_17.geojson
-    │       ├── training_data_2_17.geojson
-    │       ├── training_data_3_17.geojson
-    │       ├── ...
-```
+    │   |── training_data
+    │   |    ├── training_data_1_17.geojson
+    │   |    ├── training_data_2_17.geojson
+    │   |    ├── training_data_3_17.geojson
+    │   |    ├── ...
+    |   ├── img
+    │   │   ├── S1_20190408_IW
+    │   │   │   ├── S1_20190408_IW0000000000-0000000000.tif
+    │   │   │   ├── S1_20190408_IW0000000000-0000000064.tif
+    │   │   │   ├── S1_20190408_IW0000000000-0000000128.tif
+    │   │   │   ├── S1_20190408_IW0000000000-0000000192.tif
+    |   |   |   ├── ...
+    |   |   ├── S1_YYYYMMdd_IW
+    │   │   │   ├── S1_YYYYMMdd_IW0000000000-0000000000.tif
+    │   │   │   ├── S1_YYYYMMdd_IW0000000000-0000000064.tif
+    │   │   │   ├── S1_YYYYMMdd_IW0000000000-0000000128.tif
+    │   │   │   ├── S1_YYYYMMdd_IW0000000000-0000000192.tif
+    |   |   |   ├── ...   
+``` 
 
 # Sample Diagnostics Output 
 ```
+└── output
+        └── VV
+            ├── code
+            |   ├── R source files
+            │   
+            ├── DF-training.parquet
+            ├── DF-training-raw.parquet
+            ├── DF-VV-scores-training-2019.csv
+            ├── plot-fpc-approximations
+            │   ├── fpc-approximation-VV-agriculture-2019-45.4743068206469_-74.8298574506347.png
+            │   ├── fpc-approximation-VV-agriculture-2019-45.4756569906309_-74.816500700304.png
+            │   ├── ...
+            ├── plot-training-data
+            │   ├── ribbon-2019-VV-fixed.png
+            │   ├── ribbon-2019-VV.png
+            │   └── timeseries-2019-VV.png
+            ├── plot-VV-harmonics.png
+            ├── plot-VV-scores-2019.png
+            ├── stderr.R.diagnostics
+            ├── stdout.R.diagnostics
+            └── trained-fpc-FeatureEngine.RData
+
 ```
 
 # R Conda Packages - house keeping

@@ -7,6 +7,7 @@ target.variable   <- normalizePath(command.arguments[4]);
 print( data.directory );
 print( code.directory );
 print( output.directory );
+print( target.variable );
 
 print( format(Sys.time(),"%Y-%m-%d %T %Z") );
 
@@ -71,7 +72,7 @@ dir.tiffs    <- file.path(data.directory,"img");
 dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
-target.variable      <- target.variable;
+target.variable      <- as.character(target.variable);
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 
@@ -92,7 +93,8 @@ DF.colour.scheme <- getData.colour.scheme.json(
 
 DF.training <- preprocess.training.data(
     DF.input         = DF.training,
-    DF.colour.scheme = DF.colour.scheme
+    DF.colour.scheme = DF.colour.scheme,
+    target.variable  = target.variable
     );
 
 
@@ -111,7 +113,7 @@ print( str(DF.training)   );
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 visualize.training.data(
     DF.training      = DF.training,
-    colname.pattern  = "(VV|VH)",
+    colname.pattern  = target.variable,
     DF.colour.scheme = DF.colour.scheme,
     output.directory = "plot-training-data"
     );
@@ -166,7 +168,7 @@ compute.fpc.scores(
     x                    = 'x',
     y                    = 'y',
     date                 = 'date',
-    variable             = "VV",
+    variable             = target.variable,
     RData.trained.engine = RData.trained.engine,
     dir.parquets         = dir.parquets,
     n.cores              = n.cores,
