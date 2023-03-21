@@ -20,7 +20,6 @@ $ git clone https://github.com/Wetlands-NWRC/fpc-pipeline.git
 # Step 2): change the dir to where you cloned the repo
 $ cd ./fpc-pipeline
 ```
-
 ```sh
 # step 3: create the base conda environment and activate the environment
 $ conda create --name fpc-r-env
