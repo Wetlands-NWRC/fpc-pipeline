@@ -30,6 +30,7 @@ $ conda activate fpc-r-env
 # Step 4: run the package install helper scripts from the activate env
 $ (fpc-r-env) ./scripts/install-pkg-dep
 ```
+NOTE: if step 4 script fails for whatever reason, go to the appendix and see commands to manually install the dependencies 
 ```shell
 # step 5: from the command line boot up an R Terminal
 (fpc-r-env)$ R
@@ -44,7 +45,7 @@ $ (fpc-r-env) ./scripts/install-pkg-dep
 # or to boot up the help documentation
 >> browsVignettes("fpcFeatures")
 ```
-- if no error is raised then the package was successfully installed 
+- if no error is raised then the package was successfully installed, regardless of the version if it boots up a doc populated or not it was successfully 
 
 ## Setting up the pipeline
 - run helper script to install pipeline dependencies
@@ -146,13 +147,7 @@ chmod +x script
 # R Conda Packages - house keeping
 Note that these are just the dependencies and not how to install them
 ## Dependencies for Fpc Package
-- r-cowplot
-- r-dplyr
-- r-fda
-- r-ggplot2
-- r-logger
-- r-lubridate
-- r-R6
+
 
 ## local pipeline dependencies
 - r-arrow
@@ -180,5 +175,41 @@ However you should note that some of these packages have C++ bindings that need 
 
 <br><br>
 
+# Appendix
+## Manual installation Dependencies: FPC Package
+### Conda
+```sh
+(fpc-r-env) conda install -y -c conda-forge \
+    "r-cowplot" \
+    "r-dplyr" \
+    "r-fda" \
+    "r-ggplot2" \
+    "r-logger" \
+    "r-lubridate" \
+    "r-R6"
+```
+### Conda Packages
+- r-cowplot
+- r-dplyr
+- r-fda
+- r-ggplot2
+- r-logger
+- r-lubridate
+- r-R6
+### R Terminal
+```r
+>> install.packages(install.packages( pkgs = c("cowplot","dplyr","fda","ggplot2" "logger","R6")))
+```
+### R-Packages
+- cowplot
+- dplyr
+- fda
+- ggplot2
+- logger
+- R6
+## Manual installation Dependencies: FPC Pipeline
+### Conda
+
+### R Terminal
 # TODO 
 Add citiations / give credit to Ken
