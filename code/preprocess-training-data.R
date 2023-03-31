@@ -2,7 +2,8 @@
 preprocess.training.data <- function(
     DF.input         = NULL,
     DF.colour.scheme = NULL,
-    target.variable  = NULL
+    target.variable  = NULL,
+    target.landcovers = NULL
     ) {
 
     thisFunctionName <- "preprocess-training-data";
@@ -72,6 +73,12 @@ preprocess.training.data <- function(
     )
 
     DF.output <- DF.output[,colnames.to.retain];
+    if (!is.null(target.landcovers)) {
+        DF.output <- DF.output[DF.output$land_cover %in% target.landcovers]
+    }
+    else {
+       return(DF.output)
+    }
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     cat(paste0("\n# ",thisFunctionName,"() exits."));
