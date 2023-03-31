@@ -77,6 +77,8 @@ target.variable      <- as.character(target.variable);
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 
+if (!is.null(target.landcovers)) {target.landcovers <- strsplit(target.landcovers, ",")}
+
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 DF.training <- getData.geojson(
     input.directory = dir.geojson,
