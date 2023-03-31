@@ -4,6 +4,7 @@ code.directory    <- normalizePath(command.arguments[2]);
 output.directory  <- normalizePath(command.arguments[3]);
 target.variable   <- normalizePath(command.arguments[4]);
 
+
 print( data.directory );
 print( code.directory );
 print( output.directory );
