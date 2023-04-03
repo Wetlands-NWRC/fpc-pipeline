@@ -1,0 +1,4 @@
+include README
+include LICENSE
+include requirements
+recursive-include fpc-pipeline/code/ *
