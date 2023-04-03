@@ -32,8 +32,9 @@ class _CodeRunner:
     
     @property
     def cmd(self):
-        args = [item for item in self.__dict__ if item is not None]
-        return [self.R_EXE, *args]
+        args = [self.data_dir, self.code_dir, self.out_dir, self.target_var, 
+                self.target_land_covers]
+        return [self.R_EXE, self.entry_point, *[arg for arg in args if arg is not None]]
     
     def run(self) -> int:
         with open(f"{self.out_dir}/stdout.txt", "wb") as out, open(f"{self.out_dir}/stderr.txt", "wb") as err:
@@ -48,4 +49,4 @@ class RunDiagCli(_CodeRunner):
     def __init__(self, data_dir: str, code_dir: str = None, output_dir: str = None, 
                  target_var: str = None, target_land_covers: str = None) -> None:
         super().__init__(data_dir, code_dir, output_dir, target_var, target_land_covers)
-        self.entry_point = 'diag-cli.R'
+        self.entry_point = os.path.join(self.code_dir, 'diag-cli.R')

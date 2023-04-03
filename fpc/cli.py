@@ -22,7 +22,7 @@ def cli():
 @click.option('--target_var', default='VV')
 def diag(out_dir, data_dir, target_var, land_cover):
     click.echo("Running Diagnostics")
-    
+    out_dir = os.path.join(out_dir, target_var)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 

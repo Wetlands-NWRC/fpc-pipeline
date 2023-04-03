@@ -9,10 +9,11 @@ print( data.directory );
 print( code.directory );
 print( output.directory );
 print( target.variable );
+print(target.landcovers)
 
-print( format(Sys.time(),"%Y-%m-%d %T %Z") );
+# print( format(Sys.time(),"%Y-%m-%d %T %Z") );
 
-start.proc.time <- proc.time();
+# start.proc.time <- proc.time();
 
-# set working directory to output directory
-setwd( output.directory );
+# # set working directory to output directory
+# setwd( output.directory );
